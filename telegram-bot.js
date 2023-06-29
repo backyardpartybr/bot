@@ -36,3 +36,4 @@ bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, 'Bot started. Use the /search command followed by a keyword to search for channels and groups.');
 });
+

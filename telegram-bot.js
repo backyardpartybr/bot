@@ -1,19 +1,22 @@
 const TelegramBot = require('node-telegram-bot-api');
 
-// Replace 'YOUR_API_TOKEN' with the API token provided by BotFather
-const bot = new TelegramBot('6337995792:AAFuDK2DhsJWbHqk31zJRiu6SSoNxs6XFwM', { polling: false });
+// Replace 'YOUR_API_TOKEN' with your actual bot token
+const bot = new TelegramBot('6337995792:AAFuDK2DhsJWbHqk31zJRiu6SSoNxs6XFwM', { polling: true });
 
 bot.onText(/\/search (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const keyword = match[1];
 
-  // Get the list of all channels and groups the bot is a member of
-  bot.getChatList().then(chats => {
+  // Get updates to search for group and channel names
+  bot.getUpdates().then(updates => {
     let results = [];
 
-    chats.forEach(chat => {
-      if (chat.title.toLowerCase().includes(keyword.toLowerCase())) {
-        results.push(chat.title);
+    updates.forEach(update => {
+      const message = update.message;
+      if (message.chat.type === 'channel' || message.chat.type === 'group') {
+        if (message.chat.title.toLowerCase().includes(keyword.toLowerCase())) {
+          results.push(message.chat.title);
+        }
       }
     });
 
